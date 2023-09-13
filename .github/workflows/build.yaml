@@ -15,6 +15,8 @@ jobs:
         include:
           - os: darwin
             arch: arm64
+          - os: windows
+            exe: ".exe"
     steps:
       - uses: actions/checkout@v3
       - name: Set up Go
@@ -28,9 +30,9 @@ jobs:
         env:
           GOOS: ${{ matrix.os }}
           GOARCH: ${{ matrix.arch }}
-        run: go build -o keyboard_layout_calculator_${{ matrix.os }}_${{matrix.arch}}
+        run: go build -o keyboard_layout_calculator_${{ matrix.os }}_${{matrix.arch}}${{matrix.exe}}
       - name: Upload bins
         uses: actions/upload-artifact@v3
         with:
           name: build
-          path: keyboard_layout_calculator_${{ matrix.os }}_${{matrix.arch}}
+          path: keyboard_layout_calculator_${{ matrix.os }}_${{matrix.arch}}${{matrix.exe}}
