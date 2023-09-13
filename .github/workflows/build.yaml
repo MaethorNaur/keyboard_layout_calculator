@@ -22,8 +22,15 @@ jobs:
         with:
           go-version-file: go.mod
           cache-dependency-path: go.sum
+      - name: Install dependencies
+        run: go get .
       - name: Build ${{ matrix.os }}/${{matrix.arch}}
         env:
           GOOS: ${{ matrix.os }}
           GOARCH: ${{ matrix.arch }}
         run: go build -o keyboard_layout_calculator_${{ matrix.os }}_${{matrix.arch}}
+      - name: Upload bins
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: keyboard_layout_calculator_${{ matrix.os }}_${{matrix.arch}}
