@@ -1,5 +1,6 @@
 # 8vim_keyboard_layout_calculator
 
+```
 Usage:
   keyboard_layout_calculator [flags]
 
@@ -10,3 +11,4 @@ Flags:
   -o, --output string     Output directory (default ".")
   -p, --parallelism int   Download parallelism (default 2)
   -v, --verbose count     log verbosity
+```
