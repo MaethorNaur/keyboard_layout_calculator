@@ -36,8 +36,4 @@ jobs:
         with:
           body: "release"
           files: keyboard_layout_calculator_${{ matrix.os }}_${{matrix.arch}}${{matrix.exe}}
-      - name: Upload bins
-        uses: actions/upload-artifact@v4
-        with:
-          name: build_${{ matrix.os }}_${{matrix.arch}}
-          path: keyboard_layout_calculator_${{ matrix.os }}_${{matrix.arch}}${{matrix.exe}}
+          tag_name: test
