@@ -1,6 +1,6 @@
 module github.com/8VIM/keyboard_layout_calculator
 
-go 1.21.1
+go 1.22.1
 
 require (
 	github.com/awalterschulze/gographviz v2.0.3+incompatible
