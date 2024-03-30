@@ -3,3 +3,9 @@ __pycache__
 bigram_dictionaries/*
 run.bat
 Old Stuff
+output/
+.vscode/
+build/bin
+node_modules
+frontend/dist
+

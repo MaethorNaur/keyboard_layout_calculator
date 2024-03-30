@@ -1,0 +1,87 @@
+info:
+    name: portuguese
+layers:
+    default:
+        sectors:
+            bottom:
+                parts:
+                    left:
+                        - lower_case: r
+                        - lower_case: c
+                        - lower_case: z
+                        - lower_case: á
+                    right:
+                        - lower_case: "n"
+                        - lower_case: o
+                        - lower_case: g
+                        - lower_case: "y"
+            left:
+                parts:
+                    bottom:
+                        - lower_case: e
+                        - lower_case: m
+                        - lower_case: ç
+                        - lower_case: ê
+                    top:
+                        - lower_case: i
+                        - lower_case: p
+                        - lower_case: f
+                        - lower_case: é
+            right:
+                parts:
+                    bottom:
+                        - lower_case: a
+                        - lower_case: t
+                        - lower_case: b
+                        - lower_case: w
+                    top:
+                        - lower_case: l
+                        - lower_case: u
+                        - lower_case: k
+                        - lower_case: â
+            top:
+                parts:
+                    left:
+                        - lower_case: s
+                        - lower_case: h
+                        - lower_case: j
+                        - lower_case: x
+                    right:
+                        - lower_case: d
+                        - lower_case: v
+                        - lower_case: '-'
+                          upper_case: .
+                        - lower_case: ó
+    extra_layers:
+        first:
+            sectors:
+                bottom:
+                    parts:
+                        left:
+                            - lower_case: í
+                            - lower_case: €
+                        right:
+                            - lower_case: ô
+                            - lower_case: '?'
+                              upper_case: '"'
+                left:
+                    parts:
+                        bottom:
+                            - lower_case: ã
+                        top:
+                            - lower_case: ú
+                right:
+                    parts:
+                        bottom:
+                            - lower_case: q
+                            - lower_case: à
+                        top:
+                            - lower_case: õ
+                top:
+                    parts:
+                        left:
+                            - lower_case: ''''
+                              upper_case: ','
+                        right:
+                            - lower_case: ':'
+                              upper_case: '!'

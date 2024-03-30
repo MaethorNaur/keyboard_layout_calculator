@@ -1,0 +1,56 @@
+info:
+    name: english
+layers:
+    default:
+        sectors:
+            bottom:
+                parts:
+                    left:
+                        - lower_case: a
+                        - lower_case: d
+                        - lower_case: k
+                        - lower_case: ''''
+                          upper_case: .
+                    right:
+                        - lower_case: r
+                        - lower_case: h
+                        - lower_case: b
+                        - lower_case: j
+            left:
+                parts:
+                    bottom:
+                        - lower_case: "n"
+                        - lower_case: m
+                        - lower_case: "y"
+                        - lower_case: q
+                    top:
+                        - lower_case: t
+                        - lower_case: v
+                        - lower_case: w
+                        - lower_case: ':'
+                          upper_case: '?'
+            right:
+                parts:
+                    bottom:
+                        - lower_case: e
+                        - lower_case: l
+                        - lower_case: p
+                        - lower_case: z
+                    top:
+                        - lower_case: s
+                        - lower_case: g
+                        - lower_case: x
+            top:
+                parts:
+                    left:
+                        - lower_case: i
+                        - lower_case: c
+                        - lower_case: f
+                        - lower_case: '!'
+                          upper_case: $
+                    right:
+                        - lower_case: o
+                        - lower_case: u
+                        - lower_case: '-'
+                          upper_case: ','
+                        - lower_case: '"'

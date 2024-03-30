@@ -1,7 +1,7 @@
 package main
 
-import "fmt"
+import "github.com/8VIM/keyboard_layout_calculator/cmd"
 
 func main() {
-	fmt.Println("Hello, world.")
+	cmd.Execute()
 }

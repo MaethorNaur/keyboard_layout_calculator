@@ -1,0 +1,97 @@
+info:
+    name: french
+layers:
+    default:
+        sectors:
+            bottom:
+                parts:
+                    left:
+                        - lower_case: i
+                        - lower_case: o
+                        - lower_case: f
+                        - lower_case: q
+                    right:
+                        - lower_case: "n"
+                        - lower_case: c
+                        - lower_case: g
+                        - lower_case: '-'
+                          upper_case: ''''
+            left:
+                parts:
+                    bottom:
+                        - lower_case: m
+                        - lower_case: p
+                        - lower_case: k
+                        - lower_case: x
+                    top:
+                        - lower_case: e
+                        - lower_case: b
+                        - lower_case: j
+                        - lower_case: ï
+            right:
+                parts:
+                    bottom:
+                        - lower_case: a
+                        - lower_case: s
+                        - lower_case: v
+                        - lower_case: z
+                    top:
+                        - lower_case: l
+                        - lower_case: u
+                        - lower_case: "y"
+                        - lower_case: è
+            top:
+                parts:
+                    left:
+                        - lower_case: r
+                        - lower_case: h
+                        - lower_case: w
+                        - lower_case: î
+                    right:
+                        - lower_case: t
+                        - lower_case: d
+                        - lower_case: é
+                        - lower_case: ç
+    extra_layers:
+        first:
+            sectors:
+                bottom:
+                    parts:
+                        left:
+                            - lower_case: â
+                            - lower_case: ':'
+                              upper_case: ;
+                            - lower_case: €
+                              upper_case: (
+                        right:
+                            - lower_case: ô
+                            - lower_case: à
+                            - lower_case: '"'
+                              upper_case: '?'
+                left:
+                    parts:
+                        bottom:
+                            - lower_case: ê
+                            - lower_case: ÿ
+                        top:
+                            - lower_case: œ
+                            - lower_case: ì
+                right:
+                    parts:
+                        bottom:
+                            - lower_case: .
+                              upper_case: ','
+                            - lower_case: ö
+                            - lower_case: '!'
+                              upper_case: )
+                        top:
+                            - lower_case: ü
+                            - lower_case: æ
+                top:
+                    parts:
+                        left:
+                            - lower_case: ë
+                            - lower_case: ù
+                        right:
+                            - lower_case: û
+                            - lower_case: ò

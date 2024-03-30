@@ -1,0 +1,83 @@
+info:
+    name: spanish
+layers:
+    default:
+        sectors:
+            bottom:
+                parts:
+                    left:
+                        - lower_case: "n"
+                        - lower_case: c
+                        - lower_case: z
+                        - lower_case: w
+                    right:
+                        - lower_case: r
+                        - lower_case: t
+                        - lower_case: v
+                        - lower_case: k
+            left:
+                parts:
+                    bottom:
+                        - lower_case: e
+                        - lower_case: m
+                        - lower_case: ó
+                        - lower_case: ñ
+                    top:
+                        - lower_case: s
+                        - lower_case: p
+                        - lower_case: í
+                        - lower_case: '-'
+                          upper_case: .
+            right:
+                parts:
+                    bottom:
+                        - lower_case: a
+                        - lower_case: i
+                        - lower_case: h
+                        - lower_case: "y"
+                    top:
+                        - lower_case: d
+                        - lower_case: g
+                        - lower_case: á
+                        - lower_case: q
+            top:
+                parts:
+                    left:
+                        - lower_case: l
+                        - lower_case: b
+                        - lower_case: j
+                        - lower_case: é
+                    right:
+                        - lower_case: o
+                        - lower_case: u
+                        - lower_case: f
+                        - lower_case: x
+    extra_layers:
+        first:
+            sectors:
+                bottom:
+                    parts:
+                        left:
+                            - lower_case: ü
+                        right:
+                            - lower_case: ú
+                left:
+                    parts:
+                        bottom:
+                            - lower_case: ¡
+                              upper_case: ¿
+                        top:
+                            - lower_case: ':'
+                              upper_case: '!'
+                right:
+                    parts:
+                        bottom:
+                            - lower_case: ''''
+                              upper_case: ','
+                top:
+                    parts:
+                        left:
+                            - lower_case: '?'
+                              upper_case: '"'
+                        right:
+                            - lower_case: €

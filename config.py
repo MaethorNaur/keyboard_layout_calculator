@@ -1,3 +1,4 @@
+from score_lists import ORIGINAL_SCORE_LIST as SCORE_LIST
 from helper_classes import BigramsConfig
 
 # This is the main thing you want to change.
@@ -5,33 +6,36 @@ from helper_classes import BigramsConfig
 # weight:   The percentage of how important this language is. Make sure all weights add up to exactly 100.
 # path:     The path to your bigrams-file.
 BIGRAMS_CONFIGS = (
-    BigramsConfig(
-        name = "English",       weight = 100, # %
-        path = './bigram_dictionaries/english_bigrams.txt'
-    ),
-    BigramsConfig(
-        name = "German",        weight = 0, # %
-        path = './bigram_dictionaries/german_bigrams.txt'
-    ),
+    # BigramsConfig(
+    #     name = "English",       weight = 100, # %
+    #     path = './bigram_dictionaries/english_bigrams.txt'
+    # ),
+    # BigramsConfig(
+    #     name = "German",        weight = 0, # %
+    #     path = './bigram_dictionaries/german_bigrams.txt'
+    # ),
     BigramsConfig(
         # When using 0%, no optimization will be done using this language.
         # However, you well still be shown stats on how good this layout performs in this language.
-        name = "French",        weight = 0, # %
-        path = './bigram_dictionaries/french_bigrams.txt'
+        name="French",        weight=100,  # %
+        path='./o_fra.txt'
     ),
 )
 
 # Define the letters you want to use
-LAYER_1_LETTERS = 'etaoinsr'.lower() # All letters for the first cycleNr of calculation, including 'e' (or whatever you put in >staticLetters<)
-LAYER_2_LETTERS = 'hldcumfg'.lower() # All letters for the second cycleNr of calculation
-LAYER_3_LETTERS = 'pwybvkjx'.lower() # All letters for the third cycleNr of calculation
-LAYER_4_LETTERS = 'zq'.lower() # All letters for the fourth cycleNr of calculation
+# All letters for the first cycleNr of calculation, including 'e' (or whatever you put in >staticLetters<)
+LAYER_1_LETTERS = 'etaoinsr'.lower()
+# All letters for the second cycleNr of calculation
+LAYER_2_LETTERS = 'hldcumfg'.lower()
+# All letters for the third cycleNr of calculation
+LAYER_3_LETTERS = 'pwybvkjx'.lower()
+LAYER_4_LETTERS = 'zq'.lower()  # All letters for the fourth cycleNr of calculation
 
 # Define how which of the above letters are interchangeable (variable) between adjacent layers.
 # They have to be in the same order as they apear between layer1letters and layer2letters.
 # This has a drastic effect on performance. Time for computation skyrockets. This is where the "======>  2 out of X cycleNrs" come from.
 VAR_LETTERS_L1_L2 = 'nsrhld'.lower()
-#VAR_LETTERS_L1_L2 = ''.lower()
+# VAR_LETTERS_L1_L2 = ''.lower()
 
 # For layer 1, define that a certain Letter ('e') doesn't change.
 # Just pick the most common one in your language.
@@ -40,8 +44,9 @@ VAR_LETTERS_L1_L2 = 'nsrhld'.lower()
 # ---
 # If your rating-system cares about which way layouts are rotated,
 # remove 'e' and use {LETTERS_PER_LAYER} empty strings.
-STATIC_LETTERS = ('e', '', '', '', '', '', '', '') # the positions go clockwise. 'e' is on the bottom left.
-#STATIC_LETTERS = ('', '', '', '', '', '', '', '')
+# the positions go clockwise. 'e' is on the bottom left.
+STATIC_LETTERS = ('e', '', '', '', '', '', '', '')
+# STATIC_LETTERS = ('', '', '', '', '', '', '', '')
 
 # Define how many layers the layouts you recieve should contain.
 NR_OF_LAYERS = 4
@@ -59,15 +64,17 @@ SHOW_TOP_LAYOUTS = 5
 TEST_CUSTOM_LAYOUTS = True
 
 CUSTOM_LAYOUTS = (
-    ('Old / original 8VIM layout (flipped/rotated)', 'ayrbxp-q stdcgz-- iehljk-- onumvfw-'.lower()),
-    ('Glitchys original best layout (flipped/rotated)', 'rsbojv-- ntmlfy-- aecdpk-q iuhgzw-x'.lower()),
+    ('Old / original 8VIM layout (flipped/rotated)',
+     'ayrbxp-q stdcgz-- iehljk-- onumvfw-'.lower()),
+    ('Glitchys original best layout (flipped/rotated)',
+     'rsbojv-- ntmlfy-- aecdpk-q iuhgzw-x'.lower()),
     ('kjoetoms layout 1', 'rsgujb-- ntkmvy-- oecdpz-q iahlwf-x'.lower()),
     ('kjoetoms layout 2', 'dslfjg-- nhucvy-- oemtpz-- iawrkbqx'.lower()),
     ('kjoetoms layout 3', 'tcimjb-- nhuoky-- aepdfv-- rslgzwqx'.lower()),
- # primary rotated version
+    # primary rotated version
     ('Old / original 8VIM layout', 'nomufv-w eilhkj-- tscdzg-- yabrpxq-'.lower()),
     ('Glitchys original best layout', 'uighwzx- eadckpq- tnlmyf-- srobvj--'.lower()),
-    #('Example Layout', 'ghopwx-- abijqryz cdklst-- efmnuv--'.lower()),
+    # ('Example Layout', 'ghopwx-- abijqryz cdklst-- efmnuv--'.lower()),
 )
 
 # Unless you're trying out a super funky layout with more (or less) than 4 sectors, this should be 8.
@@ -83,7 +90,8 @@ USE_MULTIPROCESSING = False
 FILL_SYMBOL = '-'
 
 # 32 characters that aren't part of your bigram-corpus or your layout. They need to be within the first 256 slots of the ascii-table.
-ASCII_REPLACEMENT_CHARS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "[", "]", "{", "}", "(", ")", "<", ">", "/", "_", ",", "~", "¦", "±", "²", "³", "¶", "¹", "¼", "½", "¾", "¿"]
+ASCII_REPLACEMENT_CHARS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "[", "]",
+                           "{", "}", "(", ")", "<", ">", "/", "_", ",", "~", "¦", "±", "²", "³", "¶", "¹", "¼", "½", "¾", "¿"]
 
 # Ignore this option.
 SCREEN_WIDTH = 100
@@ -91,4 +99,3 @@ SCREEN_WIDTH = 100
 # The rating-system you want to use. To use a different list of scores,
 # replace "KJOETOM_SCORE_LIST" by something else which can be found in
 # the `score_list.py`-file.
-from score_lists import ORIGINAL_SCORE_LIST as SCORE_LIST

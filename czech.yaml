@@ -1,0 +1,90 @@
+info:
+    name: czech
+layers:
+    default:
+        sectors:
+            bottom:
+                parts:
+                    left:
+                        - lower_case: r
+                        - lower_case: t
+                        - lower_case: b
+                        - lower_case: f
+                    right:
+                        - lower_case: v
+                        - lower_case: l
+                        - lower_case: m
+                        - lower_case: í
+            left:
+                parts:
+                    bottom:
+                        - lower_case: k
+                        - lower_case: d
+                        - lower_case: ý
+                        - lower_case: g
+                    top:
+                        - lower_case: a
+                        - lower_case: á
+                        - lower_case: z
+                        - lower_case: č
+            right:
+                parts:
+                    bottom:
+                        - lower_case: o
+                        - lower_case: "n"
+                        - lower_case: e
+                        - lower_case: j
+                    top:
+                        - lower_case: h
+                        - lower_case: i
+                        - lower_case: c
+                        - lower_case: š
+            top:
+                parts:
+                    left:
+                        - lower_case: p
+                        - lower_case: s
+                        - lower_case: é
+                        - lower_case: ž
+                    right:
+                        - lower_case: u
+                        - lower_case: "y"
+                        - lower_case: ě
+                        - lower_case: ř
+    extra_layers:
+        first:
+            sectors:
+                bottom:
+                    parts:
+                        left:
+                            - lower_case: ň
+                            - lower_case: q
+                        right:
+                            - lower_case: '-'
+                              upper_case: ','
+                            - lower_case: ó
+                left:
+                    parts:
+                        bottom:
+                            - lower_case: w
+                            - lower_case: ':'
+                              upper_case: '!'
+                        top:
+                            - lower_case: x
+                            - lower_case: '?'
+                              upper_case: '"'
+                right:
+                    parts:
+                        bottom:
+                            - lower_case: ů
+                            - lower_case: ú
+                        top:
+                            - lower_case: ď
+                top:
+                    parts:
+                        left:
+                            - lower_case: ť
+                            - lower_case: €
+                        right:
+                            - lower_case: .
+                              upper_case: ''''

@@ -1,0 +1,70 @@
+info:
+    name: german
+layers:
+    default:
+        sectors:
+            bottom:
+                parts:
+                    left:
+                        - lower_case: "n"
+                        - lower_case: a
+                        - lower_case: f
+                        - lower_case: ß
+                    right:
+                        - lower_case: r
+                        - lower_case: s
+                        - lower_case: w
+                        - lower_case: x
+            left:
+                parts:
+                    bottom:
+                        - lower_case: t
+                        - lower_case: b
+                        - lower_case: z
+                        - lower_case: ö
+                    top:
+                        - lower_case: g
+                        - lower_case: o
+                        - lower_case: p
+                        - lower_case: j
+            right:
+                parts:
+                    bottom:
+                        - lower_case: e
+                        - lower_case: l
+                        - lower_case: k
+                        - lower_case: ü
+                    top:
+                        - lower_case: h
+                        - lower_case: v
+                        - lower_case: ä
+                        - lower_case: .
+                          upper_case: ''''
+            top:
+                parts:
+                    left:
+                        - lower_case: i
+                        - lower_case: u
+                        - lower_case: c
+                        - lower_case: "y"
+                    right:
+                        - lower_case: d
+                        - lower_case: m
+                        - lower_case: '-'
+                          upper_case: ':'
+                        - lower_case: q
+    extra_layers:
+        first:
+            sectors:
+                bottom:
+                    parts:
+                        left:
+                            - lower_case: €
+                        right:
+                            - lower_case: '?'
+                              upper_case: '"'
+                right:
+                    parts:
+                        bottom:
+                            - lower_case: ','
+                              upper_case: '!'
