@@ -1,7 +1,12 @@
 package main
 
-import "github.com/8VIM/keyboard_layout_calculator/cmd"
+import (
+	"github.com/8VIM/keyboard_layout_calculator/cmd"
+)
 
 func main() {
-	cmd.Execute()
+	cmd.Run()
+	// if err := cmd.Init().Execute(); err != nil {
+	// 	os.Exit(1)
+	// }
 }

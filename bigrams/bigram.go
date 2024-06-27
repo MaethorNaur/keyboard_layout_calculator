@@ -9,7 +9,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"math"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -20,18 +19,25 @@ import (
 )
 
 type NGram struct {
-	Md5       string
-	Monograms []NGramEntry
-	Bigrams   []NGramEntry
+	Md5                string
+	Monograms          []NGramEntry
+	Bigrams            []NGramEntry
+	MonogramsInBigrams []NGramEntry
+	// MonogramsInBigrams map[string]int
 }
 
 type NGramEntry struct {
 	Value     string
-	Frequency int
+	Frequency float64
 }
 
 func NewNGram() *NGram {
-	return &NGram{Monograms: make([]NGramEntry, 0), Bigrams: make([]NGramEntry, 0)}
+	return &NGram{
+		Monograms:          make([]NGramEntry, 0),
+		Bigrams:            make([]NGramEntry, 0),
+		MonogramsInBigrams: make([]NGramEntry, 0),
+		// MonogramsInBigrams: make(map[string]int),
+	}
 }
 
 func (r *Runner) load(task task) (n *NGram, err error) {
@@ -42,7 +48,7 @@ func (r *Runner) load(task task) (n *NGram, err error) {
 	}
 	hasher.Write([]byte(task.language.Letters))
 
-	file := filepath.Join(r.cacheDir, fmt.Sprintf("%s.json", task.name))
+	file := filepath.Join(r.cacheDir, fmt.Sprintf("%s.json", task.language.Name()))
 
 	_, errState := os.Stat(file)
 	downloadCorpuses := os.IsNotExist(errState) || r.force
@@ -56,8 +62,9 @@ func (r *Runner) load(task task) (n *NGram, err error) {
 			downloadCorpuses = true
 		}
 	}
-	n.Md5 = md5Value
+
 	if downloadCorpuses {
+		n.Md5 = md5Value
 		data := make([]byte, 0)
 		for _, name := range task.language.Corpuses {
 			var d []byte
@@ -87,14 +94,26 @@ func (n *NGram) read(file string) (err error) {
 	return
 }
 
+func reverse(s string) string {
+	size := len(s)
+	buf := make([]byte, size)
+	for start := 0; start < size; {
+		r, n := utf8.DecodeRuneInString(s[start:])
+		start += n
+		utf8.EncodeRune(buf[size-start:], r)
+	}
+	return string(buf)
+}
+
 func (n *NGram) compute(d []byte, task task) {
-	task.spinner.UpdateText(fmt.Sprintf("[%s] Computing bigrams", task.name))
+	task.spinner.UpdateText(fmt.Sprintf("[%s] Computing bigrams", task.language.Name()))
 	re := regexp.MustCompile(fmt.Sprintf("^[%s]+", task.language.Letters))
 
 	r := bufio.NewReader(bytes.NewReader(d))
 
-	monograms := make(map[string]int)
-	bigrams := make(map[string]int)
+	monograms := make(map[string]float64)
+	bigrams := make(map[string]float64)
+	monogramsInBigrams := make(map[string]float64)
 	for {
 		w := 0
 		data, _, err := r.ReadLine()
@@ -128,12 +147,25 @@ func (n *NGram) compute(d []byte, task task) {
 				}
 				if _, ok := monograms[value]; !ok {
 					monograms[value] = 0
+					monogramsInBigrams[value] = 0
 				}
 				monograms[value] += 1
 				buf = utf8.AppendRune(buf, runeValue)
 			}
 			if hasBigram {
-				value := string(buf)
+				var value = string(buf)
+				size := len(value)
+				for start := 0; start < size; {
+					r, rn := utf8.DecodeRuneInString(value[start:])
+					start += rn
+					s := string(r)
+					monogramsInBigrams[s] += 1
+				}
+				reversedValue := reverse(value)
+				if _, ok := bigrams[reversedValue]; ok {
+					value = reversedValue
+				}
+
 				if _, ok := bigrams[value]; !ok {
 					bigrams[value] = 0
 				}
@@ -141,14 +173,34 @@ func (n *NGram) compute(d []byte, task task) {
 			}
 		}
 	}
-
+	frequencySum := 0.
+	for _, v := range monograms {
+		frequencySum += v
+	}
+	for k := range monograms {
+		monograms[k] /= frequencySum
+	}
+	size := len(task.language.Letters)
+	for start := 0; start < size; {
+		r, rn := utf8.DecodeRuneInString(task.language.Letters[start:])
+		start += rn
+		s := string(r)
+		if _, ok := monogramsInBigrams[s]; !ok {
+			monogramsInBigrams[s] = 0
+		}
+		if _, ok := monograms[s]; !ok {
+			monograms[s] = 0
+		}
+	}
 	n.Monograms = mapToEntry(monograms)
+	n.MonogramsInBigrams = mapToEntry(monogramsInBigrams)
 	n.Bigrams = mapToEntry(bigrams)
 	n.sort()
 }
 
 func (n *NGram) sort() {
 	slices.SortFunc(n.Monograms, sort)
+	slices.SortFunc(n.MonogramsInBigrams, sort)
 	slices.SortFunc(n.Bigrams, sort)
 }
 
@@ -166,15 +218,18 @@ func (n *NGram) Merge(o *NGram, weight float64) {
 	}
 	monograms := entryToMap(n.Monograms)
 	bigrams := entryToMap(n.Bigrams)
+	monogramsInBigrams := entryToMap(n.MonogramsInBigrams)
 	merge(monograms, o.Monograms, weight)
 	merge(bigrams, o.Bigrams, weight)
+	merge(monogramsInBigrams, o.MonogramsInBigrams, weight)
 	n.Monograms = mapToEntry(monograms)
 	n.Bigrams = mapToEntry(bigrams)
+	n.MonogramsInBigrams = mapToEntry(monogramsInBigrams)
 	n.sort()
 }
 
-func entryToMap(entries []NGramEntry) (res map[string]int) {
-	res = make(map[string]int)
+func entryToMap(entries []NGramEntry) (res map[string]float64) {
+	res = make(map[string]float64)
 
 	for _, entry := range entries {
 		res[entry.Value] = entry.Frequency
@@ -182,7 +237,7 @@ func entryToMap(entries []NGramEntry) (res map[string]int) {
 	return
 }
 
-func mapToEntry(m map[string]int) (res []NGramEntry) {
+func mapToEntry(m map[string]float64) (res []NGramEntry) {
 	res = make([]NGramEntry, 0)
 	for k, v := range m {
 		res = append(res, NGramEntry{Value: k, Frequency: v})
@@ -190,14 +245,14 @@ func mapToEntry(m map[string]int) (res []NGramEntry) {
 	return
 }
 
-func merge(m map[string]int, entries []NGramEntry, weight float64) {
+func merge(m map[string]float64, entries []NGramEntry, weight float64) {
 	percent := weight / 100.
 
 	for _, entry := range entries {
 		if _, ok := m[entry.Value]; !ok {
 			m[entry.Value] = 0
 		}
-		m[entry.Value] += int(math.Round(float64(entry.Frequency) * percent))
+		m[entry.Value] += entry.Frequency * percent
 	}
 }
 

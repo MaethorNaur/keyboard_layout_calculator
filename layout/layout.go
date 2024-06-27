@@ -13,8 +13,9 @@ import (
 const CharactersPerLayer = 32
 
 type Layout struct {
-	Info   Info   `yaml:"info"`
-	Layers Layers `yaml:"layers"`
+	Version string `yaml:"version"`
+	Info    Info   `yaml:"info"`
+	Layers  Layers `yaml:"layers"`
 }
 
 type Info struct {
@@ -45,7 +46,7 @@ type otherCharacter struct {
 }
 
 func New(name string) *Layout {
-	l := &Layout{Info: Info{Name: name}}
+	l := &Layout{Version: "2", Info: Info{Name: name}}
 	l.Layers.ExtraLayer = make(map[string]Layer)
 	return l
 }

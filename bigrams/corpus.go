@@ -57,7 +57,7 @@ func download(task task, name string) (data []byte, err error) {
 		return
 	}
 	b, s := humanizeBytes(float64(resp.ContentLength))
-	task.spinner.UpdateText(fmt.Sprintf("[%s corpuses] Downloading: %s.tar.gz (%s %s)", task.name, name, b, s))
+	task.spinner.UpdateText(fmt.Sprintf("[%s corpuses] Downloading: %s.tar.gz (%s %s)", task.language.Name(), name, b, s))
 
 	if uncompressedStream, err = gzip.NewReader(resp.Body); err != nil {
 		return
@@ -78,7 +78,7 @@ func download(task task, name string) (data []byte, err error) {
 			if _, filename := filepath.Split(header.Name); strings.HasSuffix(filename, "words.txt") {
 				buf := new(bytes.Buffer)
 				b, s := humanizeBytes(float64(header.Size))
-				task.spinner.UpdateText(fmt.Sprintf("[%s corpuses] Extracting: %s (%s %s)", task.name, filename, b, s))
+				task.spinner.UpdateText(fmt.Sprintf("[%s corpuses] Extracting: %s (%s %s)", task.language.Name(), filename, b, s))
 
 				if _, err = buf.ReadFrom(tarReader); err == nil {
 					data = buf.Bytes()
