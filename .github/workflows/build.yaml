@@ -60,6 +60,7 @@ jobs:
     env:
         GOARCH: ${{ matrix.arch }}
     steps:
+      - uses: actions/checkout@v4
       - if: ${{matrix.os == 'darwin'}}
         uses: ./.github/workflows/build_gui_macos.yaml
         with:
