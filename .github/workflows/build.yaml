@@ -5,7 +5,7 @@ on:
     tags: ["v**"]
 
 jobs:
-  build:
+  build_cli:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -21,17 +21,60 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version-file: go.mod
-          cache-dependency-path: go.sum
-      - name: Install dependencies
+          go-version-file: cli/go.mod
+          cache-dependency-path: cli/go.sum
+      - name: Install dependencies common
         run: go get .
+        working-directory: common 
+      - name: Install dependencies cli
+        run: go get .
+        working-directory: cli
       - name: Build ${{ matrix.os }}/${{matrix.arch}}
         env:
           GOOS: ${{ matrix.os }}
           GOARCH: ${{ matrix.arch }}
-        run: go build -o keyboard_layout_calculator_${{ matrix.os }}_${{matrix.arch}}${{matrix.exe}}
+        run: go build -o ../keyboard_layout_calculator_${{ matrix.os }}_${{matrix.arch}}${{matrix.exe}}
+        working-directory: cli
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
           body: "release"
           files: keyboard_layout_calculator_${{ matrix.os }}_${{matrix.arch}}${{matrix.exe}}
+  build_gui:
+    strategy:
+      matrix:
+        platform: [windows-latest, ubuntu-latest, macos-latest]
+        arch: [amd64]
+        include:
+          - platform: macos-latest
+            os: darwin
+          - platform: macos-latest
+            arch: arm64
+            os: darwin
+          - platform: windows-latest
+            os: windows
+          - platform: ubuntu-latest
+            os: linux
+    runs-on: ${{matrix.platform}}
+    name: Build ${{ matrix.os }}/${{matrix.arch}}
+    env:
+        GOARCH: ${{ matrix.arch }}
+    steps:
+      - if: ${{matrix.os == 'darwin'}}
+        uses: ./.github/workflows/build_gui_macos.yaml
+        with:
+          platform: ${{matrix.platform}}
+          os: ${{matrix.os}}
+          arch: ${{matrix.arch}}
+      - if: ${{matrix.os == 'windows'}}
+        uses: ./.github/workflows/build_gui_windows.yaml
+        with:
+          platform: ${{matrix.platform}}
+          os: ${{matrix.os}}
+          arch: ${{matrix.arch}}
+      - if: ${{matrix.os == 'linux'}}
+        uses: ./.github/workflows/build_gui_linux.yaml
+        with:
+          platform: ${{matrix.platform}}
+          os: ${{matrix.os}}
+          arch: ${{matrix.arch}}

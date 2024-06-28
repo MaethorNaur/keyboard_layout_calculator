@@ -1,0 +1,50 @@
+name: Build GUI Linux
+
+on:
+  workflow_call:
+    inputs:
+      platform:
+        type: string
+        required: true
+      os:
+        type: string
+        required: true
+      arch:
+        type: string
+        required: true
+run-name: Build GUI for ${{inputs.os}}/${{inputs.arch}}
+jobs:
+  build:
+    env:
+      GOARCH: ${{ inputs.arch }}
+    runs-on: ${{inputs.platform}}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update dependencies
+        run: sudo apt-get update
+      - name: Install specific dependencies
+        run: sudo apt install gcc pkg-config libwayland-dev libx11-dev libx11-xcb-dev libxkbcommon-x11-dev libgles2-mesa-dev libegl1-mesa-dev libffi-dev libxcursor-dev libvulkan-dev
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: gui/go.mod
+          cache-dependency-path: gui/go.sum
+      - name: Install dependencies common
+        run: go get .
+        working-directory: common 
+      - name: Install dependencies gui
+        run: go get .
+        working-directory: gui
+      - name: Build
+        env:
+          CGO_ENABLED: '1'
+          GOOS: linux
+          GOARCH: ${{ inputs.arch }}
+        run: |
+          go build -o ../KeyboardLayoutCalculator_${{inputs.arch}}
+        working-directory: gui
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: "release"
+          files: KeyboardLayoutCalculator_${{inputs.arch}}
