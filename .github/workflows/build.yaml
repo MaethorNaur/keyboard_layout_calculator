@@ -22,7 +22,9 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version-file: cli/go.mod
-          cache-dependency-path: cli/go.sum
+          cache-dependency-path: |
+            cli/go.sum
+            common/go.sum
       - name: Install dependencies common
         run: go get .
         working-directory: common 
@@ -74,7 +76,9 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version-file: gui/go.mod
-          cache-dependency-path: gui/go.sum
+          cache-dependency-path: |
+            gui/go.sum
+            common/go.sum
       - if: ${{matrix.os != 'linux'}}
         name: Install gogio tool
         run: go install gioui.org/cmd/gogio@latest
