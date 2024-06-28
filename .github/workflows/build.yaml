@@ -94,7 +94,7 @@ jobs:
         uses: L-Super/create-dmg-actons@v1.0.2
         with:
           dmg_name: KeyboardLayoutCalculator_${{inputs.os}}_${{inputs.arch}}
-          src_dir: KeyboardLayoutCalculator_${{env.gogio_target}}_${{inputs.arch}}.app
+          src_dir: KeyboardLayoutCalculator_${{inputs.os}}_${{inputs.arch}}.app
       - uses: actions/upload-artifact@v4
         with:
           name: keyboard_layout_calculator_gui_${{ inputs.os }}_${{inputs.arch}}
