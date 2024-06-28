@@ -62,8 +62,6 @@ jobs:
             os: linux
     runs-on: ${{matrix.platform}}
     name: Build GUI ${{ matrix.os }}/${{matrix.arch}}
-    env:
-        GOARCH: ${{ matrix.arch }}
     steps:
       - uses: actions/checkout@v4
       - if: ${{matrix.os=='linux'}}
