@@ -1,0 +1,42 @@
+name: Build
+
+on:
+  push:
+    tags: ["v**"]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        platform: [windows-latest, ubuntu-latest, macos-latest]
+        arch: [amd64]
+        include:
+          - platform: macos-latest
+            os: darwin
+          - platform: macos-latest
+            arch: arm64
+            os: darwin
+          - platform: windows-latest
+            os: windows
+          - platform: ubuntu-latest
+            os: linux
+    uses: ./.github/workflows/build.yaml
+    with:
+      os: ${{matrix.os}}
+      arch: ${{matrix.arch }}
+      platform: ${{matrix.platform}}
+    secrets: inherit
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: out
+          pattern: keyboard_layout_calculator_*
+          merge-multiple: true
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: "release"
+          files:  out/* 
