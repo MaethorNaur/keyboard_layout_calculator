@@ -47,16 +47,69 @@ jobs:
         arch: [amd64]
         include:
           - platform: macos-latest
-            os: darwin
+            os: macos
+            ext: ".app"
           - platform: macos-latest
             arch: arm64
-            os: darwin
+            os: macos
+            ext: ".app"
           - platform: windows-latest
             os: windows
+            ext: ".exe"
           - platform: ubuntu-latest
             os: linux
-    uses: ./.github/workflows/build_gui_${{matrix.os}}.yaml
-    with:
-      platform: ${{matrix.platform}}
-      os: ${{matrix.os}}
-      arch: ${{matrix.arch}}
+    runs-on: ${{matrix.platform}}
+    name: Build GUI ${{ matrix.os }}/${{matrix.arch}}
+    env:
+        GOARCH: ${{ matrix.arch }}
+    steps:
+      - uses: actions/checkout@v4
+      - if: ${{matrix.os=='linux'}}
+        name: Update dependencies
+        run: sudo apt-get update
+      - if: ${{matrix.os=='linux'}}
+        name: Install specific dependencies
+        run: sudo apt install gcc pkg-config libwayland-dev libx11-dev libx11-xcb-dev libxkbcommon-x11-dev libgles2-mesa-dev libegl1-mesa-dev libffi-dev libxcursor-dev libvulkan-dev
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: gui/go.mod
+          cache-dependency-path: gui/go.sum
+      - if: ${{matrix.os != 'linux'}}
+        name: Install gogio tool
+        run: go install gioui.org/cmd/gogio@latest
+      - name: Install dependencies common
+        run: go get .
+        working-directory: common 
+      - name: Install dependencies gui
+        run: go get .
+        working-directory: gui
+      - if: ${{matrix.os != 'linux'}}
+        name: Build
+        run: |
+          gogio -target=${{matrix.os}} -arch=${{ matrix.arch }} -o ../KeyboardLayoutCalculator${{matrix.ext}} . 
+        working-directory: gui
+      - if: ${{matrix.os == 'linux'}}
+        name: Build
+        env:
+          CGO_ENABLED: '1'
+          GOOS: linux
+          GOARCH: ${{ matrix.arch }}
+        run: |
+          go build -o ../KeyboardLayoutCalculator_${{matrix.arch}}
+        working-directory: gui
+      - if: ${{matrix.os == 'macos'}}
+        name: CodeSign
+        run: |
+          codesign --force --deep --sign - KeyboardLayoutCalculator.app
+      - if: ${{matrix.os == 'macos'}}
+        name: Create DMG
+        uses: L-Super/create-dmg-actons@v1.0.2
+        with:
+          dmg_name: KeyboardLayoutCalculator_${{matrix.arch}}
+          src_dir: KeyboardLayoutCalculator.app
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: "release"
+          files: KeyboardLayoutCalculator_${{matrix.arch}}${{matrix.os=='macos' && '.dmg'|| matrix.ext}}
